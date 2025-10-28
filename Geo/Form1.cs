@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GMap.NET;
+using GMap.NET.MapProviders;
 
 namespace Geo
 {
@@ -30,6 +32,23 @@ namespace Geo
             // Démarrer le thread pour lire le fichier lorsque le formulaire est chargé
             readFileThread = new Thread(ReadFile);
             readFileThread.Start();
+
+            // Set the map provider (e.g., Google Maps)
+            gMapControl1.MapProvider = GoogleMapProvider.Instance;
+
+            // Set the map mode to fetch tiles from the server
+            gMapControl1.Manager.Mode = AccessMode.ServerOnly;
+
+            // Disable proxy
+            GMapProvider.WebProxy = null;
+
+            // Center the map on a specific location (e.g., Moscow)
+            gMapControl1.Position = new PointLatLng(55.7558, 37.6176);
+
+            // Set zoom levels
+            gMapControl1.MinZoom = 1;
+            gMapControl1.MaxZoom = 20;
+            gMapControl1.Zoom = 10;
         }
 
         private void ReadFile()
