@@ -414,3 +414,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Autoriser les fichiers .txt dans Geo/bin/Debug
+!GitHub/GNSS_App/Geo/bin/Debug/*.txt
+
