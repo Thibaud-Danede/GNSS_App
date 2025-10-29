@@ -16,6 +16,11 @@ namespace Geo
 {
     public partial class Form1 : Form
     {
+        //---------Déclarations de variables du projet-------//
+        private string lastNorth = "";
+        private string lastWest = "";
+        private string lastAltitude = "";
+
         private Thread readFileThread;
         private string filePath = "trace.txt"; // Remplacez par le chemin de votre fichier
         private List<GGA> listeGGA;
@@ -72,6 +77,11 @@ namespace Geo
                                 //Je range cet objet dans la liste des GGA
                                 listeGGA.Add(pointGGA);
 
+                                // Mise à jour des variables globales
+                                lastNorth = pointGGA.North.ToString();
+                                lastWest = pointGGA.West.ToString();
+                                lastAltitude = pointGGA.Altitude.ToString();
+
                                 //Je met à jour les champs lat, long et alt dans l'interface
                                 Console.WriteLine("Latitude : " + pointGGA.North.ToString());
                                 Console.WriteLine("Longitude : " + pointGGA.West.ToString());
@@ -95,6 +105,11 @@ namespace Geo
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Topography_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Latitude Nord : {lastNorth}\nLongitude West : {lastWest}\nAltitude : {lastAltitude} m", "Topography");
         }
     }
 }

@@ -66,6 +66,7 @@
             this.Topography.TabIndex = 2;
             this.Topography.Text = "Topography";
             this.Topography.UseVisualStyleBackColor = true;
+            this.Topography.Click += new System.EventHandler(this.Topography_Click);
             // 
             // Form1
             // 
