@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
+using System.Globalization;
+
 
 namespace Geo
 {
@@ -423,6 +425,10 @@ namespace Geo
 
             MessageBox.Show($"{pointsOverlay.Markers.Count} point(s) affiché(s) sur la carte !");
         }
-        //Test
+
+        private void empriseButton_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
