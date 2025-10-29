@@ -91,5 +91,10 @@ namespace Geo
                 MessageBox.Show("Erreur lors de la lecture du fichier : " + ex.Message);
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

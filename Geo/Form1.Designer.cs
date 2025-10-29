@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            this.Topography = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -57,11 +58,21 @@
             this.gMapControl1.TabIndex = 0;
             this.gMapControl1.Zoom = 0D;
             // 
+            // Topography
+            // 
+            this.Topography.Location = new System.Drawing.Point(516, 494);
+            this.Topography.Name = "Topography";
+            this.Topography.Size = new System.Drawing.Size(105, 36);
+            this.Topography.TabIndex = 2;
+            this.Topography.Text = "Topography";
+            this.Topography.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.Topography);
             this.Controls.Add(this.gMapControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -73,6 +84,7 @@
         #endregion
 
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
+        private System.Windows.Forms.Button Topography;
     }
 }
 
