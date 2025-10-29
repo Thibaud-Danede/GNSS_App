@@ -203,5 +203,20 @@ namespace Geo
         {
             
         }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void labelTopo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelTrace_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

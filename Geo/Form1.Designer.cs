@@ -31,6 +31,9 @@
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.Topography = new System.Windows.Forms.Button();
             this.DisplayPoints = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelTopo = new System.Windows.Forms.Label();
+            this.labelTrace = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -61,7 +64,7 @@
             // 
             // Topography
             // 
-            this.Topography.Location = new System.Drawing.Point(516, 494);
+            this.Topography.Location = new System.Drawing.Point(13, 497);
             this.Topography.Name = "Topography";
             this.Topography.Size = new System.Drawing.Size(105, 36);
             this.Topography.TabIndex = 2;
@@ -73,18 +76,49 @@
             // 
             this.DisplayPoints.AutoScroll = true;
             this.DisplayPoints.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.DisplayPoints.Location = new System.Drawing.Point(978, 13);
+            this.DisplayPoints.Location = new System.Drawing.Point(832, 62);
             this.DisplayPoints.Name = "DisplayPoints";
-            this.DisplayPoints.Size = new System.Drawing.Size(343, 571);
+            this.DisplayPoints.Size = new System.Drawing.Size(242, 522);
             this.DisplayPoints.TabIndex = 3;
             this.DisplayPoints.WrapContents = false;
             this.DisplayPoints.Paint += new System.Windows.Forms.PaintEventHandler(this.DisplayPoints_Paint);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(1080, 62);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(241, 522);
+            this.flowLayoutPanel1.TabIndex = 4;
+            this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
+            // 
+            // labelTopo
+            // 
+            this.labelTopo.AutoSize = true;
+            this.labelTopo.Location = new System.Drawing.Point(914, 26);
+            this.labelTopo.Name = "labelTopo";
+            this.labelTopo.Size = new System.Drawing.Size(82, 16);
+            this.labelTopo.TabIndex = 5;
+            this.labelTopo.Text = "Topography";
+            this.labelTopo.Click += new System.EventHandler(this.labelTopo_Click);
+            // 
+            // labelTrace
+            // 
+            this.labelTrace.AutoSize = true;
+            this.labelTrace.Location = new System.Drawing.Point(1175, 26);
+            this.labelTrace.Name = "labelTrace";
+            this.labelTrace.Size = new System.Drawing.Size(43, 16);
+            this.labelTrace.TabIndex = 6;
+            this.labelTrace.Text = "Trace";
+            this.labelTrace.Click += new System.EventHandler(this.labelTrace_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.labelTrace);
+            this.Controls.Add(this.labelTopo);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.DisplayPoints);
             this.Controls.Add(this.Topography);
             this.Controls.Add(this.gMapControl1);
@@ -92,6 +126,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -100,6 +135,9 @@
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
         private System.Windows.Forms.Button Topography;
         private System.Windows.Forms.FlowLayoutPanel DisplayPoints;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label labelTopo;
+        private System.Windows.Forms.Label labelTrace;
     }
 }
 
