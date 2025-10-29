@@ -31,10 +31,11 @@
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.Topography = new System.Windows.Forms.Button();
             this.DisplayPoints = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.DisplayTraces = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTopo = new System.Windows.Forms.Label();
             this.labelTrace = new System.Windows.Forms.Label();
             this.RecordTrace = new System.Windows.Forms.Button();
+            this.btnSIG = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -84,13 +85,13 @@
             this.DisplayPoints.WrapContents = false;
             this.DisplayPoints.Paint += new System.Windows.Forms.PaintEventHandler(this.DisplayPoints_Paint);
             // 
-            // flowLayoutPanel1
+            // DisplayTraces
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(1080, 62);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(241, 522);
-            this.flowLayoutPanel1.TabIndex = 4;
-            this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
+            this.DisplayTraces.Location = new System.Drawing.Point(1080, 62);
+            this.DisplayTraces.Name = "DisplayTraces";
+            this.DisplayTraces.Size = new System.Drawing.Size(241, 522);
+            this.DisplayTraces.TabIndex = 4;
+            this.DisplayTraces.Paint += new System.Windows.Forms.PaintEventHandler(this.DisplayTraces_Paint);
             // 
             // labelTopo
             // 
@@ -114,7 +115,7 @@
             // 
             // RecordTrace
             // 
-            this.RecordTrace.Location = new System.Drawing.Point(177, 497);
+            this.RecordTrace.Location = new System.Drawing.Point(178, 497);
             this.RecordTrace.Name = "RecordTrace";
             this.RecordTrace.Size = new System.Drawing.Size(113, 36);
             this.RecordTrace.TabIndex = 7;
@@ -122,15 +123,26 @@
             this.RecordTrace.UseVisualStyleBackColor = true;
             this.RecordTrace.Click += new System.EventHandler(this.RecordTrace_Click);
             // 
+            // btnSIG
+            // 
+            this.btnSIG.Location = new System.Drawing.Point(353, 497);
+            this.btnSIG.Name = "btnSIG";
+            this.btnSIG.Size = new System.Drawing.Size(116, 36);
+            this.btnSIG.TabIndex = 8;
+            this.btnSIG.Text = "SIG";
+            this.btnSIG.UseVisualStyleBackColor = true;
+            this.btnSIG.Click += new System.EventHandler(this.btnSIG_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.btnSIG);
             this.Controls.Add(this.RecordTrace);
             this.Controls.Add(this.labelTrace);
             this.Controls.Add(this.labelTopo);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.DisplayTraces);
             this.Controls.Add(this.DisplayPoints);
             this.Controls.Add(this.Topography);
             this.Controls.Add(this.gMapControl1);
@@ -147,10 +159,11 @@
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
         private System.Windows.Forms.Button Topography;
         private System.Windows.Forms.FlowLayoutPanel DisplayPoints;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel DisplayTraces;
         private System.Windows.Forms.Label labelTopo;
         private System.Windows.Forms.Label labelTrace;
         private System.Windows.Forms.Button RecordTrace;
+        private System.Windows.Forms.Button btnSIG;
     }
 }
 

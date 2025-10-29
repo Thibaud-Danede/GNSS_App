@@ -28,7 +28,6 @@ namespace Geo
             this.Latitude = latitude;
             this.Altitude = altitude;
             this.Time = time;
-
             ConvertToCartesian();
         }
 
@@ -39,11 +38,10 @@ namespace Geo
 
             double N = a / Math.Sqrt(1 - e2 * Math.Pow(Math.Sin(latRad), 2));
 
-            this.x = (N + Altitude) * Math.Cos(latRad) * Math.Cos(lonRad);
-            this.y = (N + Altitude) * Math.Cos(latRad) * Math.Sin(lonRad);
-            this.z = (N * (1 - e2) + Altitude) * Math.Sin(latRad);
+            x = (N + Altitude) * Math.Cos(latRad) * Math.Cos(lonRad);
+            y = (N + Altitude) * Math.Cos(latRad) * Math.Sin(lonRad);
+            z = (N * (1 - e2) + Altitude) * Math.Sin(latRad);
         }
-
         public double GetX() => x;
         public double GetY() => y;
         public double GetZ() => z;
@@ -100,7 +98,6 @@ namespace Geo
                 Console.WriteLine($"Erreur lors de l'enregistrement : {ex.Message}");
             }
         }
-    }
-}
 
+    }
 }
