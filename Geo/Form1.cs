@@ -423,5 +423,6 @@ namespace Geo
 
             MessageBox.Show($"{pointsOverlay.Markers.Count} point(s) affiché(s) sur la carte !");
         }
+        //Test
     }
 }
