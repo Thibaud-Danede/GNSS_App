@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Geo
 {
@@ -46,5 +49,57 @@ namespace Geo
         public double GetX() => x;
         public double GetY() => y;
         public double GetZ() => z;
+    }
+    internal class Trace
+    {
+        private string filePath = @"Geo\bin\Debug\";
+        public string Id { get; private set; }
+        public List<points> PointList { get; private set; } = new List<points>();
+
+        public Trace(string filename)
+        {
+            this.Id = filename;
+            this.filePath = Path.Combine(Directory.GetCurrentDirectory(), filename);
+        }
+
+        public void AddPoint(points currentPos)
+        {
+            PointList.Add(currentPos);
+        }
+
+        public void Save()
+        {
+            if (PointList.Count == 0)
+            {
+                Console.WriteLine("Aucun point à enregistrer.");
+                return;
+            }
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
+                {
+                    // En-tête CSV
+                    sw.WriteLine("Longitude,Latitude,Altitude,Time");
+
+                    // Données
+                    foreach (var p in PointList)
+                    {
+                        sw.WriteLine(
+                        $"{p.Longitude.ToString("F7", System.Globalization.CultureInfo.InvariantCulture)}," +
+                        $"{p.Latitude.ToString("F7", System.Globalization.CultureInfo.InvariantCulture)}," +
+                        $"{p.Altitude.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)}," +
+                        $"{p.Time}");
+                    }
+                }
+
+                Console.WriteLine($"Trace enregistrée avec succès dans : {filePath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de l'enregistrement : {ex.Message}");
+            }
+        }
+
     }
 }
