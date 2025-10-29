@@ -17,9 +17,11 @@ namespace Geo
     public partial class Form1 : Form
     {
         //---------Déclarations de variables du projet-------//
-        private string lastNorth = "";
-        private string lastWest = "";
-        private string lastAltitude = "";
+        private string lastNorth = ""; //Sauvegarde du dernier point nord capté
+        private string lastWest = ""; //Sauvegarde du dernier point west capté
+        private string lastAltitude = ""; //Sauvegarde du dernier point altitude capté
+        private string csvPath = "points.csv"; //Nom du fichier qui contient les données de topography
+
 
         private Thread readFileThread;
         private string filePath = "trace.txt"; // Remplacez par le chemin de votre fichier
@@ -109,6 +111,27 @@ namespace Geo
 
         private void Topography_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(lastNorth))
+            {
+                MessageBox.Show("Aucune donnée GGA lue pour le moment !");
+                return;
+            }
+
+            // prépare la ligne CSV
+            string timestampId = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string line = $"{timestampId};{lastNorth};{lastWest};{lastAltitude}";
+
+            // crée le fichier s’il n’existe pas et ajoute l’en-tête
+            if (!File.Exists(csvPath))
+            {
+                File.AppendAllText(csvPath, "timestampId;North;West;Altitude\n");
+            }
+
+            // ajoute la ligne
+            File.AppendAllText(csvPath, line + "\n");
+
+            // affiche confirmation
+            //MessageBox.Show($"Point enregistré !\n\n{line}", "Topography");
             MessageBox.Show($"Latitude Nord : {lastNorth}\nLongitude West : {lastWest}\nAltitude : {lastAltitude} m", "Topography");
         }
     }
