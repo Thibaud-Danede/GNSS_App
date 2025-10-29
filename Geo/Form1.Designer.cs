@@ -37,6 +37,7 @@
             this.RecordTrace = new System.Windows.Forms.Button();
             this.btnSIG = new System.Windows.Forms.Button();
             this.empriseButton = new System.Windows.Forms.Button();
+            this.btnTracking = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -143,6 +144,15 @@
             this.empriseButton.Text = "Emprise";
             this.empriseButton.UseVisualStyleBackColor = true;
             this.empriseButton.Click += new System.EventHandler(this.empriseButton_Click);
+            // btnTracking
+            // 
+            this.btnTracking.Location = new System.Drawing.Point(13, 550);
+            this.btnTracking.Name = "btnTracking";
+            this.btnTracking.Size = new System.Drawing.Size(105, 34);
+            this.btnTracking.TabIndex = 9;
+            this.btnTracking.Text = "Tracking";
+            this.btnTracking.UseVisualStyleBackColor = true;
+            this.btnTracking.Click += new System.EventHandler(this.btnTracking_Click);
             // 
             // Form1
             // 
@@ -150,6 +160,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
             this.Controls.Add(this.empriseButton);
+            this.Controls.Add(this.btnTracking);
             this.Controls.Add(this.btnSIG);
             this.Controls.Add(this.RecordTrace);
             this.Controls.Add(this.labelTrace);
@@ -177,6 +188,7 @@
         private System.Windows.Forms.Button RecordTrace;
         private System.Windows.Forms.Button btnSIG;
         private System.Windows.Forms.Button empriseButton;
+        private System.Windows.Forms.Button btnTracking;
     }
 }
 
