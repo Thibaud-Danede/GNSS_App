@@ -30,6 +30,7 @@
         {
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.Topography = new System.Windows.Forms.Button();
+            this.DisplayPoints = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -68,11 +69,23 @@
             this.Topography.UseVisualStyleBackColor = true;
             this.Topography.Click += new System.EventHandler(this.Topography_Click);
             // 
+            // DisplayPoints
+            // 
+            this.DisplayPoints.AutoScroll = true;
+            this.DisplayPoints.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.DisplayPoints.Location = new System.Drawing.Point(978, 13);
+            this.DisplayPoints.Name = "DisplayPoints";
+            this.DisplayPoints.Size = new System.Drawing.Size(343, 571);
+            this.DisplayPoints.TabIndex = 3;
+            this.DisplayPoints.WrapContents = false;
+            this.DisplayPoints.Paint += new System.Windows.Forms.PaintEventHandler(this.DisplayPoints_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.DisplayPoints);
             this.Controls.Add(this.Topography);
             this.Controls.Add(this.gMapControl1);
             this.Name = "Form1";
@@ -86,6 +99,7 @@
 
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
         private System.Windows.Forms.Button Topography;
+        private System.Windows.Forms.FlowLayoutPanel DisplayPoints;
     }
 }
 
