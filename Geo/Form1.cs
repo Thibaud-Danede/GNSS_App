@@ -21,7 +21,7 @@ namespace Geo
         private string lastWest = ""; //Sauvegarde du dernier point west capté
         private string lastAltitude = ""; //Sauvegarde du dernier point altitude capté
         private string timestampId = "";
-        private string csvPath = "points.csv"; //Nom du fichier qui contient les données de topography
+        private string csvPoints = "points.csv"; //Nom du fichier qui contient les données de topography
 
         // Prototype de la méthode point record qui sert à enregistrer les infos liées à un point
         private List<PointRecord> pointRecords = new List<PointRecord>();
@@ -40,10 +40,10 @@ namespace Geo
             pointRecords.Clear();
             DisplayPoints.Controls.Clear();
 
-            if (!File.Exists(csvPath))
+            if (!File.Exists(csvPoints))
                 return;
 
-            var lines = File.ReadAllLines(csvPath).Skip(1); // saute l'entête
+            var lines = File.ReadAllLines(csvPoints).Skip(1); // saute l'entête
             int y = 10;
 
             foreach (var line in lines)
@@ -182,13 +182,13 @@ namespace Geo
             string line = $"{timestampId};{lastNorth};{lastWest};{lastAltitude}";
 
             // crée le fichier s’il n’existe pas et ajoute l’en-tête
-            if (!File.Exists(csvPath))
+            if (!File.Exists(csvPoints))
             {
-                File.AppendAllText(csvPath, "timestampId;North;West;Altitude\n");
+                File.AppendAllText(csvPoints, "timestampId;North;West;Altitude\n");
             }
 
             // ajoute la ligne
-            File.AppendAllText(csvPath, line + "\n");
+            File.AppendAllText(csvPoints, line + "\n");
 
             // Rafraîchit la zone d'affichage
             DisplayPoints.Invalidate();
@@ -203,7 +203,6 @@ namespace Geo
         {
             
         }
-
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
