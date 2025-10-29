@@ -20,19 +20,82 @@ namespace Geo
         private string lastNorth = ""; //Sauvegarde du dernier point nord capté
         private string lastWest = ""; //Sauvegarde du dernier point west capté
         private string lastAltitude = ""; //Sauvegarde du dernier point altitude capté
+        private string timestampId = "";
         private string csvPath = "points.csv"; //Nom du fichier qui contient les données de topography
+
+        // Prototype de la méthode point record qui sert à enregistrer les infos liées à un point
+        private List<PointRecord> pointRecords = new List<PointRecord>();
+        private class PointRecord
+        {
+            public string Timestamp { get; set; }
+            public string North { get; set; }
+            public string West { get; set; }
+            public string Altitude { get; set; }
+        }
+
+
+        //Méthode de chargement des différents points à partir du fichier CSV
+        private void LoadPointsFromCsv()
+        {
+            pointRecords.Clear();
+            DisplayPoints.Controls.Clear();
+
+            if (!File.Exists(csvPath))
+                return;
+
+            var lines = File.ReadAllLines(csvPath).Skip(1); // saute l'entête
+            int y = 10;
+
+            foreach (var line in lines)
+            {
+                var parts = line.Split(';');
+                if (parts.Length < 4) continue;
+
+                var record = new PointRecord
+                {
+                    Timestamp = parts[0],
+                    North = parts[1],
+                    West = parts[2],
+                    Altitude = parts[3]
+                };
+
+                pointRecords.Add(record);
+
+                // création d’un bouton par timestamp
+                Button btn = new Button();
+                btn.Text = record.Timestamp;
+                btn.Tag = record; // pour y stocker les données associées
+                btn.Location = new Point(10, y);
+                btn.Width = 175;
+                btn.Height = 30;
+                btn.Click += TimestampButton_Click;
+
+                DisplayPoints.Controls.Add(btn);
+
+                y += 40;
+            }
+        }
+
+
+        //Affiche les informations relatives 
+        private void TimestampButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is PointRecord record)
+            {
+                MessageBox.Show($"Latitude Nord : {record.North}\nLongitude West : {record.West}\nAltitude : {record.Altitude} m",record.Timestamp);
+            }
+        }
 
 
         private Thread readFileThread;
         private string filePath = "trace.txt"; // Remplacez par le chemin de votre fichier
         private List<GGA> listeGGA;
-
-
         public Form1()
         {
             InitializeComponent();
             this.listeGGA = new List<GGA>();
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -56,6 +119,8 @@ namespace Geo
             gMapControl1.MinZoom = 1;
             gMapControl1.MaxZoom = 20;
             gMapControl1.Zoom = 10;
+
+            LoadPointsFromCsv();
         }
 
         private void ReadFile()
@@ -108,12 +173,12 @@ namespace Geo
         {
             if (string.IsNullOrEmpty(lastNorth))
             {
-                MessageBox.Show("Aucune donnée GGA lue pour le moment !");
+                MessageBox.Show("Aucune donnée GGA touvée.");
                 return;
             }
 
             // prépare la ligne CSV
-            string timestampId = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            timestampId = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string line = $"{timestampId};{lastNorth};{lastWest};{lastAltitude}";
 
             // crée le fichier s’il n’existe pas et ajoute l’en-tête
@@ -125,6 +190,10 @@ namespace Geo
             // ajoute la ligne
             File.AppendAllText(csvPath, line + "\n");
 
+            // Rafraîchit la zone d'affichage
+            DisplayPoints.Invalidate();
+            LoadPointsFromCsv();
+
             // affiche confirmation
             //MessageBox.Show($"Point enregistré !\n\n{line}", "Topography");
             MessageBox.Show($"Latitude Nord : {lastNorth}\nLongitude West : {lastWest}\nAltitude : {lastAltitude} m", "Topography");
@@ -132,7 +201,7 @@ namespace Geo
 
         private void DisplayPoints_Paint(object sender, PaintEventArgs e)
         {
-
+            
         }
     }
 }
