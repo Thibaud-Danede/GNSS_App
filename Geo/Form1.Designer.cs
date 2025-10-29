@@ -34,6 +34,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTopo = new System.Windows.Forms.Label();
             this.labelTrace = new System.Windows.Forms.Label();
+            this.RecordTrace = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -111,11 +112,22 @@
             this.labelTrace.Text = "Trace";
             this.labelTrace.Click += new System.EventHandler(this.labelTrace_Click);
             // 
+            // RecordTrace
+            // 
+            this.RecordTrace.Location = new System.Drawing.Point(177, 497);
+            this.RecordTrace.Name = "RecordTrace";
+            this.RecordTrace.Size = new System.Drawing.Size(113, 36);
+            this.RecordTrace.TabIndex = 7;
+            this.RecordTrace.Text = "Trace";
+            this.RecordTrace.UseVisualStyleBackColor = true;
+            this.RecordTrace.Click += new System.EventHandler(this.RecordTrace_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.RecordTrace);
             this.Controls.Add(this.labelTrace);
             this.Controls.Add(this.labelTopo);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -138,6 +150,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label labelTopo;
         private System.Windows.Forms.Label labelTrace;
+        private System.Windows.Forms.Button RecordTrace;
     }
 }
 

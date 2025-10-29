@@ -218,5 +218,25 @@ namespace Geo
         {
 
         }
+
+        private bool isActive = false;
+
+        private void RecordTrace_Click(object sender, EventArgs e)
+        {
+            if (!isActive)
+            {
+                // Turn green (active)
+                RecordTrace.BackColor = Color.LightCoral;
+                RecordTrace.Text = "Recording";
+                isActive = true;
+            }
+            else
+            {
+                // Turn red (inactive)
+                RecordTrace.BackColor = Color.White;
+                RecordTrace.Text = "Trace";
+                isActive = false;
+            }
+        }
     }
 }
