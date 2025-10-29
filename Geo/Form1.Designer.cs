@@ -35,6 +35,7 @@
             this.labelTopo = new System.Windows.Forms.Label();
             this.labelTrace = new System.Windows.Forms.Label();
             this.RecordTrace = new System.Windows.Forms.Button();
+            this.btnSIG = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gMapControl1
@@ -114,7 +115,7 @@
             // 
             // RecordTrace
             // 
-            this.RecordTrace.Location = new System.Drawing.Point(177, 497);
+            this.RecordTrace.Location = new System.Drawing.Point(178, 497);
             this.RecordTrace.Name = "RecordTrace";
             this.RecordTrace.Size = new System.Drawing.Size(113, 36);
             this.RecordTrace.TabIndex = 7;
@@ -122,11 +123,22 @@
             this.RecordTrace.UseVisualStyleBackColor = true;
             this.RecordTrace.Click += new System.EventHandler(this.RecordTrace_Click);
             // 
+            // btnSIG
+            // 
+            this.btnSIG.Location = new System.Drawing.Point(353, 497);
+            this.btnSIG.Name = "btnSIG";
+            this.btnSIG.Size = new System.Drawing.Size(116, 36);
+            this.btnSIG.TabIndex = 8;
+            this.btnSIG.Text = "SIG";
+            this.btnSIG.UseVisualStyleBackColor = true;
+            this.btnSIG.Click += new System.EventHandler(this.btnSIG_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 596);
+            this.Controls.Add(this.btnSIG);
             this.Controls.Add(this.RecordTrace);
             this.Controls.Add(this.labelTrace);
             this.Controls.Add(this.labelTopo);
@@ -151,6 +163,7 @@
         private System.Windows.Forms.Label labelTopo;
         private System.Windows.Forms.Label labelTrace;
         private System.Windows.Forms.Button RecordTrace;
+        private System.Windows.Forms.Button btnSIG;
     }
 }
 
