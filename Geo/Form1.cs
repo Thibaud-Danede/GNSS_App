@@ -27,6 +27,7 @@ namespace Geo
         private string traceFilePath = "";
         private DateTime recordStartTime;
         private string tracesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Traces");
+        private GMap.NET.WindowsForms.GMapOverlay pointsOverlay = new GMap.NET.WindowsForms.GMapOverlay("points");
 
 
 
@@ -379,8 +380,48 @@ namespace Geo
 
         }
 
+        private void btnSIG_Click(object sender, EventArgs e)
+        {
+            gMapControl1.Overlays.Clear();
+            pointsOverlay.Markers.Clear();
 
+            foreach (var record in pointRecords)
+            {
+                // Replace commas with dots (for parsing)
+                string northFixed = record.North.Replace(',', '.');
+                string westFixed = record.West.Replace(',', '.');
 
+                // Parse both numbers
+                if (double.TryParse(northFixed, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double lat) &&
+                    double.TryParse(westFixed, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double lon))
+                {
+                    // West = negative longitude
+                    lon = -lon;
 
+                    // ✅ Correct order: latitude first, longitude second
+                    var marker = new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                        new GMap.NET.PointLatLng(lat, lon),
+                        GMap.NET.WindowsForms.Markers.GMarkerGoogleType.red_dot
+                    );
+
+                    marker.ToolTipText = $"{record.Timestamp}\nLat: {lat:F6}\nLon: {lon:F6}\nAlt: {record.Altitude} m";
+                    pointsOverlay.Markers.Add(marker);
+                }
+            }
+
+            // Add overlay
+            gMapControl1.Overlays.Add(pointsOverlay);
+
+            // Center on first valid point
+            if (pointsOverlay.Markers.Count > 0)
+            {
+                gMapControl1.Position = pointsOverlay.Markers[0].Position;
+                gMapControl1.Zoom = 14;
+            }
+
+            gMapControl1.Refresh();
+
+            MessageBox.Show($"{pointsOverlay.Markers.Count} point(s) affiché(s) sur la carte !");
+        }
     }
 }
