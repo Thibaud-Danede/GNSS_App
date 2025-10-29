@@ -66,7 +66,7 @@ namespace Geo
                 btn.Text = record.Timestamp;
                 btn.Tag = record; // pour y stocker les données associées
                 btn.Location = new Point(10, y);
-                btn.Width = 175;
+                btn.Width = 120;
                 btn.Height = 30;
                 btn.Click += TimestampButton_Click;
 
