@@ -22,6 +22,13 @@ namespace Geo
         private string lastAltitude = ""; //Sauvegarde du dernier point altitude capté
         private string timestampId = "";
         private string csvPoints = "points.csv"; //Nom du fichier qui contient les données de topography
+        private bool isRecording = false;
+        private System.Windows.Forms.Timer recordTimer;
+        private string traceFilePath = "";
+        private DateTime recordStartTime;
+        private string tracesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Traces");
+
+
 
         // Prototype de la méthode point record qui sert à enregistrer les infos liées à un point
         private List<PointRecord> pointRecords = new List<PointRecord>();
@@ -31,6 +38,83 @@ namespace Geo
             public string North { get; set; }
             public string West { get; set; }
             public string Altitude { get; set; }
+        }
+
+        //Charge les Traces depuis le CSV
+        private void LoadTraces()
+        {
+            DisplayTraces.Controls.Clear();
+
+            if (!Directory.Exists(tracesFolder))
+                return;
+
+            string[] traceFiles = Directory.GetFiles(tracesFolder, "Trace_*.csv");
+            int y = 10;
+
+            foreach (string file in traceFiles)
+            {
+                // extrait la timestamp depuis le nom du fichier
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                // exemple : "Trace_2025_10_30_103212"
+                string timestamp = fileName.Replace("Trace_", "").Replace('_', ' ');
+
+                Button btn = new Button();
+                btn.Text = timestamp;
+                btn.Tag = file;
+                btn.Location = new Point(10, y);
+                btn.Width = 120;
+                btn.Height = 30;
+                btn.Click += TraceButton_Click;
+
+                DisplayTraces.Controls.Add(btn);
+                y += 40;
+            }
+        }
+
+        //Méthode qui prend en compte le click sur uns des boutons de Trace
+        private void TraceButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string filePath && File.Exists(filePath))
+            {
+                try
+                {
+                    var lines = File.ReadAllLines(filePath).Skip(1); // ignore l’en-tête
+                    var pts = new List<points>();
+
+                    foreach (var line in lines)
+                    {
+                        var parts = line.Split(';');
+                        if (parts.Length < 3) continue;
+
+                        double lat = double.Parse(parts[0].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                        double lon = double.Parse(parts[1].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                        double alt = double.Parse(parts[2].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+
+                        pts.Add(new points(lon, lat, alt));
+                    }
+
+                    if (pts.Count < 2)
+                    {
+                        MessageBox.Show("Pas assez de points pour calculer une distance.", "Trace vide");
+                        return;
+                    }
+
+                    double totalDistance = 0.0;
+                    for (int i = 1; i < pts.Count; i++)
+                    {
+                        double dx = pts[i].GetX() - pts[i - 1].GetX();
+                        double dy = pts[i].GetY() - pts[i - 1].GetY();
+                        double dz = pts[i].GetZ() - pts[i - 1].GetZ();
+                        totalDistance += Math.Sqrt(dx * dx + dy * dy + dz * dz);
+                    }
+
+                    MessageBox.Show($"Distance parcourue : {totalDistance:F2} mètres", btn.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erreur lors de la lecture de la trace : " + ex.Message);
+                }
+            }
         }
 
 
@@ -96,9 +180,33 @@ namespace Geo
             this.listeGGA = new List<GGA>();
         }
 
+        //Enregistrement si clic sur le bouton de record trace
+        private void RecordTimer_Tick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(lastNorth) || string.IsNullOrEmpty(lastWest))
+                return; // aucune donnée à enregistrer
+
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string line = $"{lastNorth};{lastWest};{lastAltitude}";
+
+            // Crée le fichier s’il n’existe pas encore
+            if (!File.Exists(traceFilePath))
+            {
+                File.AppendAllText(traceFilePath, "North;West;Altitude\n");
+            }
+
+            File.AppendAllText(traceFilePath, line + "\n");
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Crée le dossier Traces s’il n’existe pas
+            if (!Directory.Exists(tracesFolder))
+            {
+                Directory.CreateDirectory(tracesFolder);
+            }
+
             // Démarrer le thread pour lire le fichier lorsque le formulaire est chargé
             readFileThread = new Thread(ReadFile);
             readFileThread.Start();
@@ -120,7 +228,17 @@ namespace Geo
             gMapControl1.MaxZoom = 20;
             gMapControl1.Zoom = 10;
 
+            //Refresh des boutons à partir du CSV
             LoadPointsFromCsv();
+
+            //Refresh les traces à partir du CSV
+            LoadTraces();
+
+            //Initialisation du timer
+            recordTimer = new System.Windows.Forms.Timer();
+            recordTimer.Interval = 1000; // 1 seconde
+            recordTimer.Tick += RecordTimer_Tick;
+
         }
 
         private void ReadFile()
@@ -203,10 +321,6 @@ namespace Geo
         {
             
         }
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void labelTopo_Click(object sender, EventArgs e)
         {
@@ -222,20 +336,47 @@ namespace Geo
 
         private void RecordTrace_Click(object sender, EventArgs e)
         {
-            if (!isActive)
+            if (!isRecording)
             {
-                // Turn green (active)
+                // Démarrer l’enregistrement
+                recordStartTime = DateTime.Now;
+
+                // Nom du fichier avec date et heure
+                string fileName = "Trace_" + recordStartTime.ToString("yyyyMMdd_HHmmss") + ".csv";
+
+                // Dossier "Traces"
+                if (!Directory.Exists(tracesFolder))
+                    Directory.CreateDirectory(tracesFolder);
+
+                // Chemin complet
+                traceFilePath = Path.Combine(tracesFolder, fileName);
+
+                isRecording = true;
+                recordTimer.Start();
+
                 RecordTrace.BackColor = Color.LightCoral;
                 RecordTrace.Text = "Recording";
-                isActive = true;
+
+                MessageBox.Show($"Enregistrement démarré.", "Trace");
             }
             else
             {
-                // Turn red (inactive)
+                // Arrêter l’enregistrement
+                recordTimer.Stop();
+                isRecording = false;
+
                 RecordTrace.BackColor = Color.White;
                 RecordTrace.Text = "Trace";
-                isActive = false;
+
+                MessageBox.Show($"Enregistrement terminé.", "Trace");
+                LoadTraces();
             }
+            
+        }
+
+        private void DisplayTraces_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
