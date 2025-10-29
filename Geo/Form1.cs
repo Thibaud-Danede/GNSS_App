@@ -29,6 +29,10 @@ namespace Geo
         private string tracesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Traces");
         private GMap.NET.WindowsForms.GMapOverlay pointsOverlay = new GMap.NET.WindowsForms.GMapOverlay("points");
 
+        private bool isTracking = false;
+        private PointLatLng trackedPoint;
+
+
 
 
         // Prototype de la méthode point record qui sert à enregistrer les infos liées à un point
@@ -272,6 +276,13 @@ namespace Geo
                                 Console.WriteLine("Latitude : " + pointGGA.North.ToString());
                                 Console.WriteLine("Longitude : " + pointGGA.West.ToString());
                                 Console.WriteLine("Altitude : " + pointGGA.Altitude.ToString());
+
+                                if (isTracking)
+                                {
+                                    gMapControl1.Position = trackedPoint;
+                                    gMapControl1.Refresh();
+                                }
+
                             }
 
                             //et je fais ce que je veux avec !
@@ -423,5 +434,51 @@ namespace Geo
 
             MessageBox.Show($"{pointsOverlay.Markers.Count} point(s) affiché(s) sur la carte !");
         }
+
+        private void btnTracking_Click(object sender, EventArgs e)
+        {
+            if (!isTracking)
+            {
+                if (pointRecords.Count == 0)
+                {
+                    MessageBox.Show("Aucun point disponible pour le tracking !");
+                    return;
+                }
+
+                // Sélection du dernier point enregistré (tu peux changer cette logique)
+                var last = pointRecords.Last();
+
+                if (double.TryParse(last.North.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double lat) &&
+                    double.TryParse(last.West.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double lon))
+                {
+                    lon = -lon; // Si coordonnées ouest
+
+                    trackedPoint = new PointLatLng(lat, lon);
+
+                    // Centre la carte
+                    gMapControl1.Position = trackedPoint;
+                    gMapControl1.Zoom = 15;
+
+                    // ✅ Affiche les coordonnées du point tracké
+                    MessageBox.Show(
+                        $"Tracking sur le point :\n\nLatitude : {lat:F6}\nLongitude : {lon:F6}\nAltitude : {last.Altitude} m",
+                        "Tracking activé"
+                    );
+
+                    // Change l’état
+                    btnTracking.BackColor = Color.LightGreen;
+                    btnTracking.Text = "Tracking ON";
+                    isTracking = true;
+                }
+            }
+            else
+            {
+                btnTracking.BackColor = Color.LightCoral;
+                btnTracking.Text = "Tracking OFF";
+                isTracking = false;
+            }
+        }
+
+
     }
 }
